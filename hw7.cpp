@@ -9,6 +9,8 @@
 
 using namespace std;
 
+const int STUDENT_ID_LENGTH = 8;
+
 char Get_Letter_Grade(int grade_percentage);		 // returns letter grade 
 char Get_Letter_Grade_Mod(int grade_percentage); // returns mod (+/-/none)
 void Print_Letter_Grades_Tally(int num_grade_A, int num_grade_B, 
@@ -19,11 +21,11 @@ void Print_End_Message(string file_name);			 // prints custom end message
 void Record_Letter_Grade_Instance(char letter_grade, int& num_grade_A, 
 											int& num_grade_B, int& num_grade_C,
 											int& num_grade_D, int& num_grade_F);
+void Process_Summary_Stats(string input_file_name);
 
 int main() {
 	const int MAX_POINTS_TOTAL = 400;				
 	const int NUM_ASSIGNMENTS = 11;
-	const int STUDENT_ID_LENGTH = 8;
 	string input_file_name = "ass7data.txt";
 	string output_file_name = "student_results_hw7.txt";
 	string file_string = "";
@@ -47,9 +49,9 @@ int main() {
 	// create input file stream object, open input file (to read data from)
 	ifstream inputFile(input_file_name);
 
-	// creat output file stream object, open (to write results to)
 	ofstream outputFile(output_file_name);
 
+	// check both input and output files for successful open
 	if (inputFile.fail()) {
 		cerr << "Unable to open file: " << input_file_name << endl;
 		return(1);
@@ -126,6 +128,9 @@ int main() {
 	// print the tally of letter grades to output
 	Print_Letter_Grades_Tally(num_grade_A, num_grade_B, num_grade_C, 
 										num_grade_D, num_grade_F);
+
+	// process Part 2 summary stats to second output file
+	Process_Summary_Stats(input_file_name);
 	
 	// close the input file
 	Print_End_Message(output_file_name);
@@ -257,4 +262,32 @@ void Record_Letter_Grade_Instance(char letter_grade, int& num_grade_A,
 				break;
 		}
 		return;
+}
+
+void Process_Summary_Stats(string input_file_name) {
+	string file_string = "";
+	int num_students = 0;
+
+	ifstream inputFile(input_file_name);
+	ofstream outputFile("summary_stats.txt");
+
+	if (inputFile.fail()) {
+		cout << "Failure in opening input file.\n";
+		return;
+	}
+	if (outputFile.fail()) {
+		cout << "Failure in creating summary stat file.\n";
+		return;
+	}
+	// determine the number of students 
+	while (inputFile >> file_string) {
+		if (file_string.length() == STUDENT_ID_LENGTH) {
+			++num_students;
+		}
+	}
+
+	outputFile << "Number of students = " << num_students << endl;
+
+	cout << "Summary Stat was processed and transferred to output file.\n";
+	inputFile.close();
 }
