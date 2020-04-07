@@ -16,6 +16,9 @@ void Print_Letter_Grades_Tally(int num_grade_A, int num_grade_B,
 										int num_grade_F);  // prints tally of class 
 																 // letter grades 
 void Print_End_Message(string file_name);			 // prints custom end message
+void Record_Letter_Grade_Instance(char letter_grade, int& num_grade_A, 
+											int& num_grade_B, int& num_grade_C,
+											int& num_grade_D, int& num_grade_F);
 
 int main() {
 	const int MAX_POINTS_TOTAL = 400;				
@@ -116,23 +119,8 @@ int main() {
 	outputFile << letter_grade << letter_grade_mod << endl; 
 
 	// record instance of letter grade 
-	switch (letter_grade) {
-		case 'A' :
-			++num_grade_A;
-			break;
-		case 'B' : 
-			++num_grade_B;
-			break;
-		case 'C' :
-			++num_grade_C;
-			break;
-		case 'D' :
-			++num_grade_D;
-			break;
-		default :
-			++num_grade_F;
-			break;
-	}
+	Record_Letter_Grade_Instance(letter_grade, num_grade_A, num_grade_B, 
+											num_grade_C, num_grade_D, num_grade_F);
 		}
 	}
 	// print the tally of letter grades to output
@@ -246,4 +234,27 @@ void Print_End_Message(string file_name) {
 	cout << "Data and Results compiled into output file: " << file_name
 		  << endl;
 	return;
+}
+
+void Record_Letter_Grade_Instance(char letter_grade, int& num_grade_A, 
+											int& num_grade_B, int& num_grade_C,
+											int& num_grade_D, int& num_grade_F) {
+	switch (letter_grade) {
+			case 'A' :
+				++num_grade_A;
+				break;
+			case 'B' : 
+				++num_grade_B;
+				break;
+			case 'C' :
+				++num_grade_C;
+				break;
+			case 'D' :
+				++num_grade_D;
+				break;
+			default :
+				++num_grade_F;
+				break;
+		}
+		return;
 }
