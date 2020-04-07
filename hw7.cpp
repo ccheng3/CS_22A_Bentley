@@ -18,29 +18,28 @@ void Print_Letter_Grades_Tally(int num_grade_A, int num_grade_B,
 void Print_End_Message(string file_name);			 // prints custom end message
 
 int main() {
-	const int MAX_POINTS_TOTAL = 400;
+	const int MAX_POINTS_TOTAL = 400;				
 	const int NUM_ASSIGNMENTS = 11;
 	const int STUDENT_ID_LENGTH = 8;
 	string input_file_name = "ass7data.txt";
 	string output_file_name = "student_results_hw7.txt";
 	string file_string = "";
-	int stud_num = 1, 
-		 file_val = 0, 
-		 assign_sum = 0, 
-		 adjusted_assign_sum = 0,
-		 total_points = 0,
-		 midterm_score = 0,
+	int file_val = 0, 				// current queried value in input file buffer 
+		 assign_sum = 0, 				// assignment sum before adjustment
+		 adjusted_assign_sum = 0,  // assignment sum after adjustment
+		 total_points = 0,			// total points received in class
+		 midterm_score = 0,			
 		 final_score = 0,
-		 lab_score = 0,	
+		 lab_score = 0,				// sum of lab exercise points
 		 lowest_assign_score = 0,
 		 grade_percentage = 0,
-		 num_grade_A = 0,
+		 num_grade_A = 0,				// number of A's
 		 num_grade_B = 0,
 		 num_grade_C = 0,
 		 num_grade_D = 0,
 		 num_grade_F = 0;
 	char letter_grade = 32;
-	char letter_grade_mod = 32;
+	char letter_grade_mod = 32;	// + or - or no mod to letter grade
 
 	// create input file stream object, open input file (to read data from)
 	ifstream inputFile(input_file_name);
@@ -63,8 +62,7 @@ int main() {
 
 	while (inputFile >> file_string) {
 		if (file_string.length() == STUDENT_ID_LENGTH) {
-			outputFile << /*"Student: " << stud_num <<  ", " << */file_string;
-			++stud_num;
+			outputFile << file_string;
 			assign_sum = 0;
 			for (int counter = 1; counter <= NUM_ASSIGNMENTS; ++counter) {
 				inputFile >> file_val;
