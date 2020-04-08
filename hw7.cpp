@@ -273,11 +273,12 @@ void Process_Summary_Stats(string input_file_name) {
 	int file_val = 0;
 	int pre_assign_sum = 0;
 	int grand_total = 0;
-	double grand_percent = 0.0;
+	double grand_percent = 0.0, student_percent = 0.0;
 	double average_percent_total = 0.0;
 	string highest_grade_student = "", lowest_grade_student = "";
 	int highest_grade_points = 0, lowest_grade_points = 0;
 	double highest_grade_percent = 0.0, lowest_grade_percent = 0.0;
+	int i = 0;
 
 	ifstream inputFile(input_file_name);
 	ofstream outputFile("summary_stats.txt");
@@ -290,6 +291,8 @@ void Process_Summary_Stats(string input_file_name) {
 		cout << "Failure in creating summary stat file.\n";
 		return;
 	}
+
+	i = 0;
 	// determine the number of students 
 	while (inputFile >> file_string) {
 		if (file_string.length() == STUDENT_ID_LENGTH) {
@@ -316,11 +319,33 @@ void Process_Summary_Stats(string input_file_name) {
 				//cout << "Total points so far is: " << total_points << endl;
 			}
 			cout << "Total points is: " << total_points << endl;
-			grand_percent += round((static_cast<double>(total_points) / 
-														MAX_POINTS_TOTAL) * 100);
+			student_percent = (static_cast<double>(total_points) / 
+														MAX_POINTS_TOTAL) * 100; 
+			grand_percent += student_percent;
 			grand_total += total_points;
-
 		}
+		if (i == 0) {
+			highest_grade_points = total_points;
+			highest_grade_percent = student_percent;
+			highest_grade_student = file_string;
+			lowest_grade_points = total_points;
+			lowest_grade_percent = student_percent;
+			lowest_grade_student = file_string;
+		}
+		else {
+			if (total_points < lowest_grade_points) {
+				lowest_grade_student = file_string;
+				lowest_grade_points = total_points;
+				lowest_grade_percent = student_percent;
+			}
+			else if (total_points > highest_grade_points) {
+				highest_grade_student = file_string;
+				highest_grade_points = total_points;
+				highest_grade_percent = student_percent;
+			}
+			else {}
+		}
+		++i;
 	}
 
 	outputFile << "Number of students = " << num_students << endl;
@@ -331,6 +356,12 @@ void Process_Summary_Stats(string input_file_name) {
 	outputFile << "The average percent total = " 
 				  << fixed << setprecision(1) << average_percent_total 
 				  << "%" << endl;
+	outputFile << "Highest grade: Id=" << highest_grade_student
+				  << "  Points=" << highest_grade_points << "  Percent=" 
+				  << highest_grade_percent << endl;
+	outputFile << "Lowest grade: Id=" << lowest_grade_student 
+				  << "  Points=" << lowest_grade_points << "  Percent=" 
+				  << lowest_grade_percent << endl;
 
 	cout << "Summary Stat was processed and transferred to output file.\n";
 	inputFile.close();
