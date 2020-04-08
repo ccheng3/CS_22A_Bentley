@@ -10,6 +10,8 @@
 using namespace std;
 
 const int STUDENT_ID_LENGTH = 8;
+const int NUM_ASSIGNMENTS = 11;
+const int MAX_POINTS_TOTAL = 400;	
 
 char Get_Letter_Grade(int grade_percentage);		 // returns letter grade 
 char Get_Letter_Grade_Mod(int grade_percentage); // returns mod (+/-/none)
@@ -24,8 +26,6 @@ void Record_Letter_Grade_Instance(char letter_grade, int& num_grade_A,
 void Process_Summary_Stats(string input_file_name);
 
 int main() {
-	const int MAX_POINTS_TOTAL = 400;				
-	const int NUM_ASSIGNMENTS = 11;
 	string input_file_name = "ass7data.txt";
 	string output_file_name = "student_results_hw7.txt";
 	string file_string = "";
@@ -266,7 +266,18 @@ void Record_Letter_Grade_Instance(char letter_grade, int& num_grade_A,
 
 void Process_Summary_Stats(string input_file_name) {
 	string file_string = "";
+	const int NUM_ADDNL_SCORES = 3;
 	int num_students = 0;
+	int total_points = 0;
+	int lowest_assign_score = 0;
+	int file_val = 0;
+	int pre_assign_sum = 0;
+	int grand_total = 0;
+	double grand_percent = 0.0;
+	double average_percent_total = 0.0;
+	string highest_grade_student = "", lowest_grade_student = "";
+	int highest_grade_points = 0, lowest_grade_points = 0;
+	double highest_grade_percent = 0.0, lowest_grade_percent = 0.0;
 
 	ifstream inputFile(input_file_name);
 	ofstream outputFile("summary_stats.txt");
@@ -283,10 +294,43 @@ void Process_Summary_Stats(string input_file_name) {
 	while (inputFile >> file_string) {
 		if (file_string.length() == STUDENT_ID_LENGTH) {
 			++num_students;
+			pre_assign_sum = 0;
+			for (int counter = 0; counter < NUM_ASSIGNMENTS; ++counter) {
+				inputFile >> file_val;
+				if (counter == 0) {
+					lowest_assign_score = file_val;
+				}
+				else {
+					if (file_val < lowest_assign_score) {
+						lowest_assign_score = file_val;
+					}
+				}
+				pre_assign_sum += file_val;
+			}
+			//cout << "Pre-assign sum is: " << pre_assign_sum << endl;
+			total_points = pre_assign_sum - lowest_assign_score;
+			//cout << "Adjusted assign sum is: " << total_points << endl;
+			for (int counter = 0; counter < NUM_ADDNL_SCORES; ++counter) {
+				inputFile >> file_val;
+				total_points += file_val;
+				//cout << "Total points so far is: " << total_points << endl;
+			}
+			cout << "Total points is: " << total_points << endl;
+			grand_percent += round((static_cast<double>(total_points) / 
+														MAX_POINTS_TOTAL) * 100);
+			grand_total += total_points;
+
 		}
 	}
 
 	outputFile << "Number of students = " << num_students << endl;
+	outputFile << "The average total points = " << fixed << setprecision(1)
+				  << static_cast<double>(grand_total) / num_students << endl;
+	
+	average_percent_total = grand_percent / num_students; 
+	outputFile << "The average percent total = " 
+				  << fixed << setprecision(1) << average_percent_total 
+				  << "%" << endl;
 
 	cout << "Summary Stat was processed and transferred to output file.\n";
 	inputFile.close();
