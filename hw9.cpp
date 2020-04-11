@@ -93,7 +93,7 @@ int main() {
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										letter_grade_mod, working_index_increment);	
 
-		Print_Current_Student_Summary(total_sum, letter_grade, letter_grade_mod,
+		Print_Current_Student_Summary(total_sum, letter_grade, letter_grade_mod, 
 												percent_grade);	
 	}
 
