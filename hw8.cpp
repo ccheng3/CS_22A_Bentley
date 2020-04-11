@@ -57,7 +57,8 @@ void Play_Game_Until_Target_Score(const int max_sum) {
 		 moe_sum = 0;			// Moe's total sum 
 	int player_num = 1;		// player indicator variable 
 
-	while ((larry_sum < max_sum) && (curly_sum < max_sum) && (moe_sum < max_sum)) {
+	while ((larry_sum < max_sum) && 
+				(curly_sum < max_sum) && (moe_sum < max_sum)) {
 		switch(player_num) {
 			case 1 :
 				cout << "Larry, its your turn\n";
@@ -74,52 +75,48 @@ void Play_Game_Until_Target_Score(const int max_sum) {
 				Roll_Dice(moe_sum, MOE_MAX_NUM_ROLLS, "Moe");
 				player_num = 1;
 				break; 
-
-				return;
 		}
 	}
+	return;
 }
-
 
 void Roll_Dice(int& total_sum, int num_rolls, string player_name) {
 	int dice_roll_one, dice_roll_two, current_roll_sum;
 	int total_dice_roll = 0;
 
-		for (int roll_number = 1; roll_number <= num_rolls; ++roll_number) {
-			dice_roll_one = (rand() % 6) + 1;
-			dice_roll_two = (rand() % 6) + 1;
-			current_roll_sum = dice_roll_one + dice_roll_two;
+	for (int roll_number = 1; roll_number <= num_rolls; ++roll_number) {
+		dice_roll_one = (rand() % 6) + 1;
+		dice_roll_two = (rand() % 6) + 1;
+		current_roll_sum = dice_roll_one + dice_roll_two;
 
-			cout << "    You rolled " << dice_roll_one << " and " 
-				  << dice_roll_two << ".";
+		cout << "    You rolled " << dice_roll_one << " and " 
+			  << dice_roll_two << ".";
 
-			if ((dice_roll_one == 1) && (dice_roll_two == 1)) {
-				cout << "  That's SKUNK\n";
-				current_roll_sum = 0;
-				total_dice_roll = 0;
-				total_sum = 0;
-			}
-			else if ((dice_roll_one == 1) || (dice_roll_two == 1)) {
-				current_roll_sum = 0;
-				total_dice_roll = 0;
-				cout << "  That's " << current_roll_sum << endl;
-			}
-			else {
-				cout << "  That's " << current_roll_sum << endl;
-			} 
-
-			if (((dice_roll_one == 1) && (dice_roll_two == 1)) || 
-				((dice_roll_one == 1) || (dice_roll_two == 1))) {
-				
-				cout << "  That's " << current_roll_sum 
-					  << " points for your turn\n";
-				break;
-			}
-			total_dice_roll += current_roll_sum;
+		if ((dice_roll_one == 1) && (dice_roll_two == 1)) {
+			cout << "  That's SKUNK\n";
+			current_roll_sum = 0;
+			total_dice_roll = 0;
+			total_sum = 0;
 		}
+		else if ((dice_roll_one == 1) || (dice_roll_two == 1)) {
+			current_roll_sum = 0;
+			total_dice_roll = 0;
+			cout << "  That's " << current_roll_sum << endl;
+		}
+		else {
+			cout << "  That's " << current_roll_sum << endl;
+		} 
 
-		Print_Turn_Result(dice_roll_one, dice_roll_two,
-								 total_dice_roll, total_sum, player_name);
-	
+		if (((dice_roll_one == 1) && (dice_roll_two == 1)) || 
+			((dice_roll_one == 1) || (dice_roll_two == 1))) {
+			
+			cout << "  That's " << current_roll_sum 
+				  << " points for your turn\n";
+			break;
+		}
+		total_dice_roll += current_roll_sum;
+	}
+	Print_Turn_Result(dice_roll_one, dice_roll_two,							 
+							total_dice_roll, total_sum, player_name);
 	return;
 }
