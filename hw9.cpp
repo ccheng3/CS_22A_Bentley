@@ -13,6 +13,11 @@ const int FIRST_ASSIGN_DATA_INDEX = 1;
 const int LAST_ASSIGN_DATA_INDEX = 11;
 const int MAX_POINTS = 400;
 
+void Calculate_Total_Course_Points(int& total_sum, int data_array[], 
+											int ARRAY_NUM_ELEMENTS, 
+											const int LAST_ASSIGN_DATA_INDEX, 
+											const int LAST_DATA_COLUMN_INDEX, 
+											const int student_assign_sum);
 void Calculate_Percent_Grade(const int& total_sum, const int MAX_POINTS, 
 										int& percent_grade);
 void Determine_Letter_Grade(const int& percent_grade, char& letter_grade);
@@ -79,23 +84,15 @@ int main() {
 		student_assign_sum -= lowest_assign_score;
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										student_assign_sum, working_index_increment);
-		/*data_array[LAST_DATA_COLUMN_INDEX + working_index_increment] 
-				= student_assign_sum;
-		++working_index_increment;*/
 		cout << " " << student_assign_sum;
 
 		// calculate and store total points
-		total_sum = 0;
-		for (int counter = LAST_ASSIGN_DATA_INDEX + 1;
-		 counter <= LAST_DATA_COLUMN_INDEX; ++counter) {
-		 	cout << "  " << setw(3) << data_array[counter];
-			total_sum += data_array[counter];
-		}
-		total_sum += student_assign_sum;
+		Calculate_Total_Course_Points(total_sum, data_array, ARRAY_NUM_ELEMENTS, 
+												LAST_ASSIGN_DATA_INDEX, 
+												LAST_DATA_COLUMN_INDEX, 
+												student_assign_sum);
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										total_sum, working_index_increment);
-		/*data_array[LAST_DATA_COLUMN_INDEX + working_index_increment] = total_sum;
-		++working_index_increment;*/
 		cout << setw(6) << total_sum << "  ";
 		
 
@@ -104,25 +101,17 @@ int main() {
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										percent_grade, working_index_increment);
 		cout << setw(3) << percent_grade << " ";
-		/*data_array[LAST_DATA_COLUMN_INDEX + working_index_increment] 
-			= percent_grade;
-		++working_index_increment; */
 
 		// calculate, store letter grade
 		Determine_Letter_Grade(percent_grade, letter_grade);
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										letter_grade, working_index_increment);
-		/*data_array[LAST_DATA_COLUMN_INDEX + working_index_increment] 
-				= letter_grade;
-			++working_index_increment;*/
 		cout << static_cast<char>(letter_grade);
 
 		// calculate, store letter grade mod
 		Determine_Letter_Grade_Mod(percent_grade, letter_grade_mod);
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										letter_grade_mod, working_index_increment);
-		/*data_array[LAST_DATA_COLUMN_INDEX + working_index_increment] 
-				= letter_grade_mod;*/
 		cout << static_cast<char>(letter_grade_mod) << endl;
 	}
 
@@ -132,6 +121,22 @@ int main() {
 
 	return 0;
 } 
+
+
+void Calculate_Total_Course_Points(int& total_sum, int data_array[], 
+											int ARRAY_NUM_ELEMENTS, 
+											const int LAST_ASSIGN_DATA_INDEX, 
+											const int LAST_DATA_COLUMN_INDEX, 
+											const int student_assign_sum) {
+	total_sum = 0;
+	for (int counter = LAST_ASSIGN_DATA_INDEX + 1;
+	 counter <= LAST_DATA_COLUMN_INDEX; ++counter) {
+	 	cout << "  " << setw(3) << data_array[counter];
+		total_sum += data_array[counter];
+	}
+	total_sum += student_assign_sum;
+	return;
+}
 
 void Calculate_Percent_Grade(const int& total_sum, const int MAX_POINTS, 
 										int& percent_grade) {
