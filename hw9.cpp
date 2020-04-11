@@ -13,6 +13,7 @@ const int FIRST_ASSIGN_DATA_INDEX = 1;
 const int LAST_ASSIGN_DATA_INDEX = 11;
 const int MAX_POINTS = 400;
 
+void Print_Header_Text();
 void Calculate_Assignment_Total(int& student_assign_sum, int data_array[], 
 											const int ARRAY_NUM_ELEMENTS);
 void Calculate_Total_Course_Points(int& total_sum, int data_array[], 
@@ -48,10 +49,7 @@ int main() {
 		cout << "Error in opening output file. Please check\n";
 	}*/
 
-	cout << "Student   -----   Assignment Grades  -----  Ass  Mid  Fin  LEx Total"
-		  << "  Pct Gr\n";
-	cout << "--------  -- -- -- -- -- -- -- -- -- -- --  ---  ---  ---  --- "
-		  << "-----  --- --\n";
+	Print_Header_Text();
 
 	while (input_File >> file_val) {
 		cout << setw(8) << setfill('0') << file_val << setfill(' ') << "  ";
@@ -77,7 +75,6 @@ int main() {
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										total_sum, working_index_increment);
 		cout << setw(6) << total_sum << "  ";
-		
 
 		// calculate, store percent grade
 		Calculate_Percent_Grade(total_sum, percent_grade);
@@ -104,6 +101,14 @@ int main() {
 
 	return 0;
 } 
+
+void Print_Header_Text() {
+	cout << "Student   -----   Assignment Grades  -----  Ass  Mid  Fin  LEx Total"
+		  << "  Pct Gr\n";
+	cout << "--------  -- -- -- -- -- -- -- -- -- -- --  ---  ---  ---  --- "
+		  << "-----  --- --\n";
+	return;
+}
 
 void Calculate_Assignment_Total(int& student_assign_sum, int data_array[], 
 											const int ARRAY_NUM_ELEMENTS) {
