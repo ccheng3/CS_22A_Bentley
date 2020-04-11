@@ -13,8 +13,10 @@ const int FIRST_ASSIGN_DATA_INDEX = 1;
 const int LAST_ASSIGN_DATA_INDEX = 11;
 const int MAX_POINTS = 400;
 
-void Determine_Letter_Grade(const int percent_grade, char& letter_grade);
-void Determine_Letter_Grade_Mod(const int percent_grade, char& letter_grade_mod);
+void Calculate_Percent_Grade(const int& total_sum, const int MAX_POINTS, 
+										int& percent_grade);
+void Determine_Letter_Grade(const int& percent_grade, char& letter_grade);
+void Determine_Letter_Grade_Mod(const int& percent_grade, char& letter_grade_mod);
 void Store_Input_Val_In_Array(int data_array[], int ARRAY_NUM_ELEMENTS, 
 										int storage_val, int& working_index_increment);
 
@@ -98,8 +100,7 @@ int main() {
 		
 
 		// calculate, store percent grade
-		percent_grade = round((static_cast<double>(total_sum) / MAX_POINTS) 
-										* 100);
+		Calculate_Percent_Grade(total_sum, MAX_POINTS, percent_grade);
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										percent_grade, working_index_increment);
 		cout << setw(3) << percent_grade << " ";
@@ -132,7 +133,14 @@ int main() {
 	return 0;
 } 
 
-void Determine_Letter_Grade(const int percent_grade, char& letter_grade) {
+void Calculate_Percent_Grade(const int& total_sum, const int MAX_POINTS, 
+										int& percent_grade) {
+	percent_grade = round((static_cast<double>(total_sum) / MAX_POINTS) 
+										* 100);
+	return;
+}
+
+void Determine_Letter_Grade(const int& percent_grade, char& letter_grade) {
 	if ((percent_grade <= 100) && (percent_grade >= 90)) {
 				letter_grade = 'A';
 	}
@@ -151,18 +159,21 @@ void Determine_Letter_Grade(const int percent_grade, char& letter_grade) {
 	return;
 }
 
-void Determine_Letter_Grade_Mod(const int percent_grade, char& letter_grade_mod) {
+void Determine_Letter_Grade_Mod(const int& percent_grade, 
+											char& letter_grade_mod) {
 	if ((percent_grade == 100) || (percent_grade == 99) ||
 			(percent_grade == 100) || (percent_grade == 89) || 
 			(percent_grade == 88) || (percent_grade == 79) || 
 			(percent_grade == 78) || (percent_grade == 69) ||
-			(percent_grade == 68)) {
+			(percent_grade == 68)) 
+	{
 			letter_grade_mod = '+';
 	}
 	else if ((percent_grade == 91) || (percent_grade == 90) || 
 		(percent_grade == 81) || (percent_grade == 80) || 
 		(percent_grade == 71) || (percent_grade == 70) || 
-		(percent_grade == 61) || (percent_grade == 60)) {
+		(percent_grade == 61) || (percent_grade == 60)) 
+	{
 		letter_grade_mod = '-';
 	}
 	else {
