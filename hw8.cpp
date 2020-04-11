@@ -19,6 +19,9 @@ const int MOE_MAX_NUM_ROLLS = 10000;
 // function prototypes
 void Roll_Dice(int& total_sum, int num_rolls, string player_name);
 void Play_Game_Until_Target_Score(const int max_sum = WINNING_SUM);
+void Print_Turn_Result(const int& dice_roll_one, const int dice_roll_two,
+								const int& total_dice_roll, int& total_sum, 
+								const string player_name);
 
 // main function
 int main() {
@@ -30,6 +33,24 @@ int main() {
 }
 
 // function definitions
+void Print_Turn_Result(const int& dice_roll_one, const int dice_roll_two,
+								const int& total_dice_roll, int& total_sum, 
+								const string player_name) {
+	if (!(((dice_roll_one == 1) && (dice_roll_two == 1)) || 
+				((dice_roll_one == 1) || (dice_roll_two == 1)))) {
+		
+		cout << "  That's " << total_dice_roll << " points for your turn\n";
+	}
+	total_sum += total_dice_roll;
+	cout << "Total points = " << total_sum << endl;
+
+	if (total_sum >= 100) {
+		cout << player_name << " won the game with "
+			  << total_sum << " points\n";
+	}
+	return;
+}
+
 void Play_Game_Until_Target_Score(const int max_sum) {
 	int larry_sum = 0, 		// Larry's total sum 
 		 curly_sum = 0,		// Curly's total sum
@@ -96,19 +117,9 @@ void Roll_Dice(int& total_sum, int num_rolls, string player_name) {
 			}
 			total_dice_roll += current_roll_sum;
 		}
-		if (!(((dice_roll_one == 1) && (dice_roll_two == 1)) || 
-						((dice_roll_one == 1) || (dice_roll_two == 1)))) {
-				
-				cout << "  That's " << total_dice_roll 
-					  << " points for your turn\n";
-			}
-		total_sum += total_dice_roll;
-		cout << "Total points = " << total_sum << endl;
 
-		if (total_sum >= 100) {
-			cout << player_name << " won the game with "
-				  << total_sum << " points\n";
-		}
+		Print_Turn_Result(dice_roll_one, dice_roll_two,
+								 total_dice_roll, total_sum, player_name);
 	
 	return;
 }
