@@ -42,6 +42,7 @@ int main() {
 		  << "-----  --- --\n";
 
 	while (input_File >> file_val) {
+		cout << "Student: " << setw(8) << setfill('0') << file_val << endl;
 		working_index_increment = 1;
 
 		// read in each student data
