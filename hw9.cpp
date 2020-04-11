@@ -13,12 +13,12 @@ const int FIRST_ASSIGN_DATA_INDEX = 1;
 const int LAST_ASSIGN_DATA_INDEX = 11;
 const int MAX_POINTS = 400;
 
+void Calculate_Assignment_Total(int& student_assign_sum, int data_array[], 
+											const int ARRAY_NUM_ELEMENTS);
 void Calculate_Total_Course_Points(int& total_sum, int data_array[], 
-											int ARRAY_NUM_ELEMENTS, 
-											const int LAST_ASSIGN_DATA_INDEX, 
-											const int LAST_DATA_COLUMN_INDEX, 
+											int ARRAY_NUM_ELEMENTS,  
 											const int student_assign_sum);
-void Calculate_Percent_Grade(const int& total_sum, const int MAX_POINTS, 
+void Calculate_Percent_Grade(const int& total_sum, 
 										int& percent_grade);
 void Determine_Letter_Grade(const int& percent_grade, char& letter_grade);
 void Determine_Letter_Grade_Mod(const int& percent_grade, char& letter_grade_mod);
@@ -65,31 +65,14 @@ int main() {
 		}
 
 		// calc and store assignment total
-		student_assign_sum = 0;
-		for (int counter = FIRST_ASSIGN_DATA_INDEX; 
-			counter <= LAST_ASSIGN_DATA_INDEX; ++counter) {
-			cout << setw(2) << data_array[counter] << " ";
-			student_assign_sum += data_array[counter];
-
-			// find the lowest assignment score to drop 
-			if (counter == FIRST_ASSIGN_DATA_INDEX) {
-				lowest_assign_score = data_array[FIRST_ASSIGN_DATA_INDEX];
-			}
-			else {
-				if (data_array[counter] < lowest_assign_score) {
-					lowest_assign_score = data_array[counter];
-				}
-			}
-		}
-		student_assign_sum -= lowest_assign_score;
+		Calculate_Assignment_Total(student_assign_sum, data_array, 
+											ARRAY_NUM_ELEMENTS);
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										student_assign_sum, working_index_increment);
 		cout << " " << student_assign_sum;
 
 		// calculate and store total points
 		Calculate_Total_Course_Points(total_sum, data_array, ARRAY_NUM_ELEMENTS, 
-												LAST_ASSIGN_DATA_INDEX, 
-												LAST_DATA_COLUMN_INDEX, 
 												student_assign_sum);
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										total_sum, working_index_increment);
@@ -97,7 +80,7 @@ int main() {
 		
 
 		// calculate, store percent grade
-		Calculate_Percent_Grade(total_sum, MAX_POINTS, percent_grade);
+		Calculate_Percent_Grade(total_sum, percent_grade);
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										percent_grade, working_index_increment);
 		cout << setw(3) << percent_grade << " ";
@@ -122,11 +105,32 @@ int main() {
 	return 0;
 } 
 
+void Calculate_Assignment_Total(int& student_assign_sum, int data_array[], 
+											const int ARRAY_NUM_ELEMENTS) {
+	int lowest_assign_score;
+	student_assign_sum = 0;
+		
+	for (int counter = FIRST_ASSIGN_DATA_INDEX; 
+		counter <= LAST_ASSIGN_DATA_INDEX; ++counter) {
+		cout << setw(2) << data_array[counter] << " ";
+		student_assign_sum += data_array[counter];
+
+		// find the lowest assignment score to drop 
+		if (counter == FIRST_ASSIGN_DATA_INDEX) {
+			lowest_assign_score = data_array[FIRST_ASSIGN_DATA_INDEX];
+		}
+		else {
+			if (data_array[counter] < lowest_assign_score) {
+				lowest_assign_score = data_array[counter];
+			}
+		}
+	}
+	student_assign_sum -= lowest_assign_score;
+	return;
+}
 
 void Calculate_Total_Course_Points(int& total_sum, int data_array[], 
-											int ARRAY_NUM_ELEMENTS, 
-											const int LAST_ASSIGN_DATA_INDEX, 
-											const int LAST_DATA_COLUMN_INDEX, 
+											int ARRAY_NUM_ELEMENTS,  
 											const int student_assign_sum) {
 	total_sum = 0;
 	for (int counter = LAST_ASSIGN_DATA_INDEX + 1;
@@ -138,8 +142,7 @@ void Calculate_Total_Course_Points(int& total_sum, int data_array[],
 	return;
 }
 
-void Calculate_Percent_Grade(const int& total_sum, const int MAX_POINTS, 
-										int& percent_grade) {
+void Calculate_Percent_Grade(const int& total_sum, int& percent_grade) {
 	percent_grade = round((static_cast<double>(total_sum) / MAX_POINTS) 
 										* 100);
 	return;
