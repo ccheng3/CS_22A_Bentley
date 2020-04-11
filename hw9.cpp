@@ -14,6 +14,9 @@ const int LAST_ASSIGN_DATA_INDEX = 11;
 const int MAX_POINTS = 400;
 
 void Print_Header_Text();
+void Print_Current_Student_Summary(const int total_sum, const char letter_grade,
+												const int letter_grade_mod, 
+												const int percent_grade);
 void Calculate_Assignment_Total(int& student_assign_sum, int data_array[], 
 											const int ARRAY_NUM_ELEMENTS);
 void Calculate_Total_Course_Points(int& total_sum, int data_array[], 
@@ -52,9 +55,9 @@ int main() {
 	Print_Header_Text();
 
 	while (input_File >> file_val) {
-		cout << setw(8) << setfill('0') << file_val << setfill(' ') << "  ";
 		working_index_increment = 1;
-
+		cout << setw(8) << setfill('0') << file_val << setfill(' ') << "  ";
+		
 		// read in each student data
 		data_array[0] = file_val;
 		for (int counter = 1; counter <= LAST_DATA_COLUMN_INDEX; ++counter) {
@@ -74,25 +77,24 @@ int main() {
 												student_assign_sum);
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										total_sum, working_index_increment);
-		cout << setw(6) << total_sum << "  ";
 
 		// calculate, store percent grade
 		Calculate_Percent_Grade(total_sum, percent_grade);
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										percent_grade, working_index_increment);
-		cout << setw(3) << percent_grade << " ";
 
 		// calculate, store letter grade
 		Determine_Letter_Grade(percent_grade, letter_grade);
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
 										letter_grade, working_index_increment);
-		cout << static_cast<char>(letter_grade);
 
 		// calculate, store letter grade mod
 		Determine_Letter_Grade_Mod(percent_grade, letter_grade_mod);
 		Store_Input_Val_In_Array(data_array, ARRAY_NUM_ELEMENTS, 
-										letter_grade_mod, working_index_increment);
-		cout << static_cast<char>(letter_grade_mod) << endl;
+										letter_grade_mod, working_index_increment);	
+
+		Print_Current_Student_Summary(total_sum, letter_grade, letter_grade_mod,
+												percent_grade);	
 	}
 
 	// close the input file
@@ -107,6 +109,16 @@ void Print_Header_Text() {
 		  << "  Pct Gr\n";
 	cout << "--------  -- -- -- -- -- -- -- -- -- -- --  ---  ---  ---  --- "
 		  << "-----  --- --\n";
+	return;
+}
+
+void Print_Current_Student_Summary(const int total_sum, const char letter_grade,
+												const int letter_grade_mod, 
+												const int percent_grade) {
+	cout << setw(6) << total_sum << "  ";
+	cout << setw(3) << percent_grade << " ";
+	cout << static_cast<char>(letter_grade);
+	cout << static_cast<char>(letter_grade_mod) << endl;
 	return;
 }
 
